@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Table-Animals'; // reutilizando estilos
+import './Table-Animals'; 
 
 const FeedTable = () => {
 const [feedData, setFeedData] = useState([

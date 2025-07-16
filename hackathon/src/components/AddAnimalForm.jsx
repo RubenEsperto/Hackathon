@@ -23,7 +23,10 @@ const AddAnimalForm = ({ onAdd}) => {
       
         if(formData.nome && formData.espécie && formData.ração && formData.quantidade) {
             onAdd(formData);
-            setFormData({ nome: '', espécie: '', ração: '', quantidade: '' });
+            setFormData({ nome: '', 
+                espécie: '', 
+                ração: '', 
+                quantidade: '' });
         } else { 
             alert("Preencha todos os campos!");
         }
@@ -50,13 +53,19 @@ const AddAnimalForm = ({ onAdd}) => {
             onChange={handleChange}
             /> 
 
-            <input 
-            type="text"
+            <select 
             name="ração"
-            placeholder="Tipo de ração"
             value={formData.ração}
             onChange={handleChange}
-            />
+            >
+                <option value="">Selecione o tipo de ração</option>
+                <option value="Peixes e crustáceos">Peixes e crustáceos</option>
+                <option value="Sardinhas">Sardinhas</option>
+                <option value="Comida de peixe normal">Comida de peixe normal</option>
+                <option value="Atum e outros peixes">Atum e outros peixes</option>
+            </select>
+
+            
 
             <input 
             type="text"
@@ -65,7 +74,7 @@ const AddAnimalForm = ({ onAdd}) => {
             value={formData.quantity}
             onChange={handleChange}
             />
-            <button type="submit"> Adicionar Animal </button> 
+            <button type="submit" className='add-animal'> Adicionar Animal </button> 
             </form>
 
     ); 

@@ -34,6 +34,7 @@ const handleAddAnimal = (newAnimal) => {
 
   return (
   <>
+  
  
     <div className="table-container">
         
