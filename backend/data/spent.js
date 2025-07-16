@@ -7,15 +7,6 @@ async function GetSpent() {
     return await coll.find({}).toArray();
 }
 
-async function updateSpent(id, update) {
-    const coll = await GetCollection(collName);
-    const result = await coll.updateOne(
-        { _id: id }, 
-        { $set: {quantity: update}}
-    );
-    return result.modifiedCount > 0;
-}
-
 async function createSpent(spent) {
     const coll = await GetCollection(collName);
     const result = await coll.insertOne(spent);
@@ -24,6 +15,5 @@ async function createSpent(spent) {
 
 module.exports = {
     GetSpent,
-    updateSpent,
     createSpent
 };

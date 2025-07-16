@@ -1,6 +1,9 @@
 const { GetAnimals, GetAnimalById, AddAnimal, UpdateAnimal, DeleteAnimal} = require("../data/animal");
+const { ObjectId } = require("mongodb");
 
 async function createAnimal(animal) {
+    animal.ration.id = new ObjectId(animal.ration.id);
+    animal.ration.quantity = animal.ration.quantity + "t";
     return await AddAnimal(animal);
 }
 
@@ -9,15 +12,20 @@ async function fetchAnimals() {
 }
 
 async function fetchAnimalById(id) {
-    return await GetAnimalById(id);
+    const newId = new ObjectId(id);
+    return await GetAnimalById(newId);
 } 
 
 async function modifyAnimal(id, update) {
-    return await UpdateAnimal(id, update);
+    const newId = new ObjectId(id);
+    const animal = await GetAnimalById(newId);
+    const newUpdate = { ...animal.ration, quantity: update + "t"}
+    return await UpdateAnimal(newId, newUpdate);
 }
 
 async function deleteAnimal(id) {
-    return await DeleteAnimal(id);
+    const newId = new ObjectId(id);
+    return await DeleteAnimal(newId);
 }
 
 module.exports = {

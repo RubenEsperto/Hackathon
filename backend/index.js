@@ -3,6 +3,7 @@ const { createAnimal, fetchAnimals, fetchAnimalById, modifyAnimal, deleteAnimal 
 const { fetchRations, fetchRationById, modifyRation } = require("./services/ration");
 const { getUser } = require("./services/user");
 const { createToken, verifyToken, removeToken } = require("./services/token");
+const { createNewSpent, fetchSpent,} = require("./services/spent");
 const app = express();
 const port = 3034;
 app.use(express.json());
@@ -141,6 +142,16 @@ app.patch("/rations/:id", async (req, res) => {
         return res.status(403).json({message:`Invalid token.`})
     }
 
+    const ration = await fetchRationById(req.params.id);
+
+    const spent = {
+        date: new Date(),
+        rationId: req.params.id,
+        quantity: String(Number(req.body.quantity) - Number(ration.quantity.replace("t", ""))) + "t"
+    }
+
+    await createNewSpent(spent);
+
     try {
         const id = req.params.id;
         const update = req.body.quantity;
@@ -185,6 +196,21 @@ app.delete("/logout", async (req, res) => {
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
         res.status(500).json({ error: "Failed to logout" });
+    }
+});
+
+app.get("/spent", async (req, res) => {
+    const token = req.headers.authorization
+
+    if ( verifyToken(token) === false) {
+        return res.status(403).json({message:`Invalid token.`})
+    }
+
+    try {
+        const spent = await fetchSpent();
+        res.status(200).json(spent);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch spent data" });
     }
 });
 
