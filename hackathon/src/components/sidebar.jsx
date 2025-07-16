@@ -61,16 +61,17 @@ export default function PermanentDrawerLeft() {
         </List>
         <Divider />
         </Drawer>
-
 {/*MAIN CONTENT*/}
-
-      <Box
+    <Box
         component="main"
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}>
         <Toolbar /> 
         <div class="small-card-wrap">
-          <SmallCard/>
-          <SmallCard/>
+          <SmallCard titulo="Estoque Total"  valor="1000(ton)"/>
+          <SmallCard titulo="Estoque Gasto este mês"  valor="1000(ton)"/>
+          <SmallCard titulo="Estoque Sobra"  valor="1000(ton)"/>
+          <SmallCard titulo="Próxima Encomenda"  valor="3 meses" quantia="(300ton/sardinhas)"/>
+          <SmallCard titulo="Última Encomenda"  valor="2 semanas"  quantia="(200ton/crustaceos)"/>
         </div>
       </Box>
     </Box>

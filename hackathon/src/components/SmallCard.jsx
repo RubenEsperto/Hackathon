@@ -4,12 +4,15 @@ import '../styles/SmallCard.css'
 export default function SmallCard(props) {
   
     return (
-        <div class="card">
-            <h3 class="card-title">
-             Título
+        <div className="card">
+            <h3 className="card-title">
+             {props.titulo}
             </h3>
-            <p class="card-value">
-            Valor
+            <p className="card-value">
+            {props.valor}
+            </p>
+            <p className="card-value">
+            {props.quantia}
             </p>
         </div>
       ) 
