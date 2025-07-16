@@ -1,8 +1,8 @@
 import React from 'react';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Link, useLocation } from 'react-router-dom';
+import SetMealIcon from '@mui/icons-material/SetMeal';
+import WavesIcon from '@mui/icons-material/Waves';
 
 const navItems = [
   { text: 'Dashboard', path: '/dashboard' },
@@ -23,7 +23,7 @@ function SidebarMenu() {
             selected={location.pathname === item.path}
           >
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              {index % 2 === 0 ? <SetMealIcon /> : <WavesIcon />}
             </ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItemButton>

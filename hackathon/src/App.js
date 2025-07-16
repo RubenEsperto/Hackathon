@@ -23,6 +23,7 @@ import SidebarMenu from './components/SideBarMenu';
 import ListadeAnimais from './pages/StockAnimals';
 import FoodStock from './pages/StockFood';
 import SignIn from './pages/SignIn.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 
 const drawerWidth = 240;
 
@@ -37,8 +38,8 @@ function App() {
           sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
         >
           <Toolbar>
-            <Typography variant="h6" noWrap component="div">
-              Olá, admin! Bem-vindo ao painel de controle.
+            <Typography variant="h4" noWrap component="div">
+              Olá, Admin! Bem-vindo ao painel de controle.
             </Typography>
           </Toolbar>
         </AppBar>
@@ -70,7 +71,7 @@ function App() {
           <Routes>
             <Route path="/stock/animais" element={<ListadeAnimais />} />
             <Route path="/stock/comida" element={<FoodStock />} />
-            <Route path="/dashboard" element={<div>Dashboard</div>} />
+            <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/signin" element={<SignIn/>} />
           </Routes>
         </Box>

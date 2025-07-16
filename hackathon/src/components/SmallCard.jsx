@@ -11,9 +11,6 @@ export default function SmallCard(props) {
             <p className="card-value">
             {props.valor}
             </p>
-            <p className="card-value">
-            {props.quantia}
-            </p>
         </div>
       ) 
 }

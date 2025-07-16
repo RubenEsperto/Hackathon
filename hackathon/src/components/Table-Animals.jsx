@@ -1,40 +1,88 @@
-import React from 'react';
-import '../styles/Table-Animals.css'; 
-import AddAnimalForm from './AddAnimalForm'; 
-import  { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import '../styles/Table-Animals.css';
+import AddAnimalForm from './AddAnimalForm';
 
 const DataTable = () => {
-  const setAnimals = [ 
-    
-    { id: 1, nome: 'Larry', espécie: 'Lontra', ração: 'Peixes e crustáceos ', quantity: '20 toneladas'},
-    { id: 2, nome: 'Dolly & Molly', espécie: 'Golfinho', ração: 'Sardinhas', quantity: '12 toneladas'}, 
-    { id: 3, nome: 'Nemo', espécie: 'Peixe-palhaço', ração: 'Comida de peixe normal ', quantity: '4 toneladas'},
-    { id: 4, nome: 'Kroak', espécie: 'Tubarão-Branco', ração: 'Atum e outros peixes ', quantity: '20 toneladas'}
-  ]; 
+  const [animals, setAnimals] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
-const [showForm, setShowForm ] = useState(false);
+  const fetchAnimals = async () => {
+    const res = await fetch('http://localhost:3034/animals');
+    const data = await res.json();
+    setAnimals(data);
+  };
 
+  useEffect(() => {
+    fetchAnimals();
+  }, []);
 
   const handleAddFood = async (id) => {
     const amount = prompt('Definir quantidade de ração');
-    const tons = parseFloat(amount)
-  }
+    const tons = parseFloat(amount);
+    if (isNaN(tons)) {
+      alert('Por favor, insira um número válido.');
+      return;
+    }
 
-const handleAddAnimal = (newAnimal) => { 
-  const newEntry = {
-    id: setAnimals.length + 1, 
-    ...newAnimal
+    try {
+      const res = await fetch(`http://localhost:3034/animals/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ ration: tons })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('Atualização feita com sucesso!');
+        fetchAnimals();
+      } else {
+        alert(`Erro: ${data.error || data.message}`);
+      }
+    } catch (err) {
+      console.error('Erro na atualização:', err);
+      alert('Erro ao tentar atualizar a ração.');
+    }
   };
-  
-  setAnimals(prev => [...prev, newEntry]);
-  setShowForm(false);
-}; 
 
-{showForm && <AddAnimalForm onAdd={handleAddAnimal} />}
+  const handleAddAnimal = async (newAnimal) => {
+    try {
+      const payload = {
+        name: newAnimal.name,
+        species: newAnimal.species,
+        ration: {
+          rationid: newAnimal.rationid,
+          quantity: newAnimal.quantity,
+        }
+      };
+
+      const res = await fetch('http://localhost:3034/animals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        alert("Animal adicionado com sucesso!");
+        fetchAnimals();
+        setShowForm(false);
+      } else {
+        const data = await res.json();
+        alert(`Erro: ${data.message || 'Não foi possível adicionar o animal'}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao adicionar animal.");
+    }
+  };
 
   return (
   <>
-  
  
     <div className="table-container">
         
