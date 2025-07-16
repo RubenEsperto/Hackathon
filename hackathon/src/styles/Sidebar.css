@@ -1,0 +1,5 @@
+.small-card-wrap {
+    display: flex; 
+    justify-content: space-evenly;
+    gap: 5px;
+}
