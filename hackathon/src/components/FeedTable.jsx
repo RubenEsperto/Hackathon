@@ -4,6 +4,7 @@ import './Table-Animals'; // reutilizando estilos
 const FeedTable = () => {
   const [rations, setRations] = useState([]);
   const [animals, setAnimals] = useState([]);
+  const [feedData, setFeedData] = useState([]);
    
   const fetchFeedData = async () => {
     const res = await fetch('http://localhost:3034/rations');
