@@ -1,44 +1,48 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import './Table-Animals'; // reutilizando estilos
 
 const FeedTable = () => {
-  const [feedData,] = useState([
-    {
-      id: 1,
-      type: 'Sardinhas',
-      animal: 'Larry',
-      quantity: 12,
-      duration: '14 dias',
-    },
-    {
-      id: 2,
-      type: 'Peixes pequenos',
-      animal: 'Dolly & Molly',
-      quantity: 50,
-      duration: '30 dias',
-    },
-
-    {
-        id: 3, 
-        type: 'Comida de peixe normal',
-        animal: 'Nemo',
-        quantity: 4,
-        duration: '10 dias',
-    },
-    {
-        id: 4, 
-        type: 'Atum',
-        animal: 'Kroak',
-        quantity: 29,
-        duration: '1 mês',
-    },
+  const [rations, setRations] = useState([]);
+  const [animals, setAnimals] = useState([]);
    
+  const fetchFeedData = async () => {
+    const res = await fetch('http://localhost:3034/rations');
+    const data = await res.json();
+    setRations(data);
+  }
 
+  const fetchAnimals = async () => {
+    const res = await fetch('http://localhost:3034/animals'); 
+    const data = await res.json();
+    setAnimals(data);
+  }
 
+  const getRemainingMonths = (feedName, feedQuantityStr) => {
+    const feedQuantity = Number(feedQuantityStr.replace('t', '').trim());
 
+    const dailyUsage = animals
+    .filter(animal =>
+      animal.ration &&
+      animal.ration.type &&
+      animal.ration.type.trim().toLowerCase() === feedName.trim().toLowerCase()
+    )
+    .reduce((total, animal) => {
+      const quantity = Number(animal.ration.quantity.replace('t', '').trim());
+      return total + (isNaN(quantity) ? 0 : quantity);
+    }, 0);
 
+    const monthlyUsage = dailyUsage * 30;
+    if (monthlyUsage === 0) return '∞';
 
-  ]);
+    const months = feedQuantity / monthlyUsage;
+
+    return `${months.toFixed(1)} meses`;
+  };
+
+  useEffect(() => {
+    fetchFeedData();
+    fetchAnimals();
+  }, []);
 
   return (
     <div className="table-container">
@@ -55,13 +59,13 @@ const FeedTable = () => {
           </tr>
         </thead>
         <tbody>
-          {feedData.map(feed => (
-            <tr key={feed.id}>
-              <td>{feed.id}</td>
-              <td>{feed.type}</td>
+          {feedData.map((feed, i) => (
+            <tr key={i}>
+              <td>{i}</td>
+              <td>{feed.name}</td>
               <td>{feed.animal}</td>
               <td>{feed.quantity}</td>
-              <td>{feed.duration}</td>
+              <td>{getRemainingMonths(feed.name, feed.quantity)}</td>
               <td>
                 <button className='addFood'onClick={() => alert('Funcionalidade em desenvolvimento')}>
                   Editar
