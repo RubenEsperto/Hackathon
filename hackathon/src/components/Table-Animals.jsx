@@ -1,8 +1,10 @@
 import React from 'react';
-import '../styles/Table-Animals.css';
+import '../styles/Table-Animals.css'; 
+import AddAnimalForm from './AddAnimalForm'; 
+import  { useState } from 'react'
 
 const DataTable = () => {
-  const animals = [ 
+  const setAnimals = [ 
     
     { id: 1, nome: 'Larry', espécie: 'Lontra', ração: 'Peixes e crustáceos ', quantity: '20 toneladas'},
     { id: 2, nome: 'Dolly & Molly', espécie: 'Golfinho', ração: 'Sardinhas', quantity: '12 toneladas'}, 
@@ -10,15 +12,33 @@ const DataTable = () => {
     { id: 4, nome: 'Kroak', espécie: 'Tubarão-Branco', ração: 'Atum e outros peixes ', quantity: '20 toneladas'}
   ]; 
 
+const [showForm, setShowForm ] = useState(false);
+
 
   const handleAddFood = (id) => {
     const amount = prompt('Definir quantidade de ração');
     const tons = parseFloat(amount)
   }
 
+const handleAddAnimal = (newAnimal) => { 
+  const newEntry = {
+    id: setAnimals.length + 1, 
+    ...newAnimal
+  };
+  
+  setAnimals(prev => [...prev, newEntry]);
+  setShowForm(false);
+}; 
+
+{showForm && <AddAnimalForm onAdd={handleAddAnimal} />}
+
   return (
+  <>
+ 
     <div className="table-container">
-        <h1>Lista de Animais</h1>
+        
+
+        
       <table className="data-table">
         <thead>
           <tr>
@@ -31,7 +51,7 @@ const DataTable = () => {
           </tr>
         </thead>
         <tbody>
-          {animals.map(animal => (
+          {setAnimals.map(animal => (
             <tr key={animal.id}>
               <td>{animal.id}</td>
               <td>{animal.nome}</td>
@@ -41,9 +61,16 @@ const DataTable = () => {
               <td> <button className='addFood' onClick={() => handleAddFood(animal.id)}> Editar</button></td>
             </tr>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </tbody> 
+              </table>
+     
+    </div> 
+    <button onClick={()=> setShowForm(prev=>!prev )} className="add-animal-btn"> 
+          {showForm ? 'Cancelar' : 'Adicionar Animal' }
+          </button>
+          
+         {showForm && <AddAnimalForm onAdd={handleAddAnimal} />}
+    </>
   );
 };
 

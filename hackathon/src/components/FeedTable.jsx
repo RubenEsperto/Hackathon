@@ -2,47 +2,55 @@ import React, { useState } from 'react';
 import './Table-Animals'; // reutilizando estilos
 
 const FeedTable = () => {
-  const [feedData,] = useState([
-    {
-      id: 1,
-      type: 'Sardinhas',
-      animal: 'Larry',
-      quantity: 12,
-      duration: '14 dias',
-    },
-    {
-      id: 2,
-      type: 'Peixes pequenos',
-      animal: 'Dolly & Molly',
-      quantity: 50,
-      duration: '30 dias',
-    },
+const [feedData, setFeedData] = useState([
+  {
+    id: 1,
+    type: 'Sardinhas',
+    animal: 'Larry',
+    quantity: 12,
+    duration: '14 dias',
+  },
+  {
+    id: 2,
+    type: 'Peixes pequenos',
+    animal: 'Dolly & Molly',
+    quantity: 50,
+    duration: '30 dias',
+  },
+  {
+    id: 3, 
+    type: 'Comida de peixe normal',
+    animal: 'Nemo',
+    quantity: 4,
+    duration: '10 dias',
+  },
+  {
+    id: 4, 
+    type: 'Atum',
+    animal: 'Kroak',
+    quantity: 29,
+    duration: '1 mês',
+  }
+]);
 
-    {
-        id: 3, 
-        type: 'Comida de peixe normal',
-        animal: 'Nemo',
-        quantity: 4,
-        duration: '10 dias',
-    },
-    {
-        id: 4, 
-        type: 'Atum',
-        animal: 'Kroak',
-        quantity: 29,
-        duration: '1 mês',
-    },
-   
+const handleEditQuantidade = (id) => {
+  const amount = prompt('Nova quantidade(toneladas):');
+  const tons = parseFloat(amount);
+  if(!isNaN(tons) && tons >= 1 && tons <= 100) { 
+    setFeedData(prev => 
+      prev.map(feed => 
+        feed.id === id ? {...feed, quantity: tons } : feed
+      )
+    );
+  }else{ 
+    alert ('Por favor, insira um valor entre 1 e 100 toneladas.')
+  }
+  };
 
-
-
-
-
-  ]);
 
   return (
     <div className="table-container">
-      <h1>Estoque de Ração</h1>
+    
       <table className="data-table">
         <thead>
           <tr>
@@ -63,7 +71,7 @@ const FeedTable = () => {
               <td>{feed.quantity}</td>
               <td>{feed.duration}</td>
               <td>
-                <button className='addFood'onClick={() => alert('Funcionalidade em desenvolvimento')}>
+                <button className='addFood'onClick={() => handleEditQuantidade(feed.id)}>
                   Editar
                 </button>
               </td>
