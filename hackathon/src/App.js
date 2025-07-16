@@ -38,8 +38,8 @@ function App() {
           sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
         >
           <Toolbar>
-            <Typography variant="h6" noWrap component="div">
-              Olá, admin! Bem-vindo ao painel de controle.
+            <Typography variant="h4" noWrap component="div">
+              Olá, Admin! Bem-vindo ao painel de controle.
             </Typography>
           </Toolbar>
         </AppBar>
