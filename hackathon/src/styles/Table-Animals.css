@@ -1,0 +1,67 @@
+h1{
+    font-size: 22px;
+    padding: 12px;
+}
+
+
+
+.table-container {
+  margin: 2rem;
+  overflow-x: auto;
+  border: black 5px double;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-evenly;
+align-items: center;
+margin-left: 295px; 
+
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid #a1e6f9;
+  padding: 12px;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: #dbecfe;
+  font-weight: bold;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #94bae8;
+}
+
+.data-table tr:hover {
+  background-color: #6df0f3;
+  transition: background-color 0.1s ease-in-out;
+}
+
+
+.addFood{
+    border-radius: 12px;
+    background-color: #daf9f9; 
+    color: #000;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
+   align-self: center;
+} 
+
+
+.addFood:hover{
+    background-color: #94bae8;
+    color: #fff;
+    transition: background-color 0.1s ease-in-out;
+}
