@@ -1,0 +1,30 @@
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  margin:0;
+  padding:10px;
+  text-align: left;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card-title {
+  font-size: 20px;
+  color: #333;
+  font-weight: 600;
+  margin: 0;
+}
+
+.card-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2e7d32; /* nice green for positive values */
+  margin: 0;
+}
+
+.unit {
+  font-size: 16px;
+  color: #777;
+  margin-left: 4px;
+} 
