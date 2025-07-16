@@ -4,7 +4,7 @@ const { MongoClient } = require("mongodb") ;
 const url = "mongodb://localhost:27017";
 
 // Database Name
-const defaultDbName = "Hackaton";
+const defaultDbName = "Hackathon";
 
 let client = undefined
 
