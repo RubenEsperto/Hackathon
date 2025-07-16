@@ -12,7 +12,8 @@ import Divider from '@mui/material/Divider';
 import SidebarMenu from './components/SideBarMenu';
 import ListadeAnimais from './pages/StockAnimals';
 import FoodStock from './pages/StockFood';
-import SignIn from './pages/SignIn';
+import SignIn from './pages/SignIn.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 
 const drawerWidth = 240;
 

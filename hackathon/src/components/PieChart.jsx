@@ -3,6 +3,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import '../styles/PieChart.css'
 export default function BasicPie() {
   return (<>
+  <div className="pie-wrap">
     <h2>Estoque dividido por tipo</h2>
     <PieChart
       series={[
@@ -14,9 +15,10 @@ export default function BasicPie() {
           ],
         },
       ]}
-      width={200}
-      height={200}
+      width={300}
+      height={300}
     />
+    </div>
     </>
   );
 }

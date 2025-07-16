@@ -82,41 +82,43 @@ const DataTable = () => {
   };
 
   return (
-    <>
-      <div className="table-container">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Espécie</th>
-              <th>Tipo de Ração</th>
-              <th>Quantidade</th>
-              <th>Adicionar Comida</th>
+  <>
+ 
+    <div className="table-container">
+        
+
+        
+      <table className="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Espécie</th>
+            <th>Tipo de Ração</th>
+            <th>Quantidade</th>
+            <th>Adicionar Comida</th>
+          </tr>
+        </thead>
+        <tbody>
+          {setAnimals.map(animal => (
+            <tr key={animal.id}>
+              <td>{animal.id}</td>
+              <td>{animal.nome}</td>
+              <td>{animal.espécie}</td>
+              <td>{animal.ração}</td>
+              <td>{animal.quantity}</td>
+              <td> <button className='addFood' onClick={() => handleAddFood(animal.id)}> Editar</button></td>
             </tr>
-          </thead>
-          <tbody>
-            {animals.map((animal, i) => (
-              <tr key={i}>
-                <td>{i + 1}</td>
-                <td>{animal.name}</td>
-                <td>{animal.species}</td>
-                <td>{animal.ration?.rationid || '-'}</td>
-                <td>{animal.ration?.quantity || '-'}</td>
-                <td>
-                  <button className='addFood' onClick={() => handleAddFood(animal._id)}>Editar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <button onClick={() => setShowForm(prev => !prev)} className="add-animal-btn">
-        {showForm ? 'Cancelar' : 'Adicionar Animal'}
-      </button>
-
-      {showForm && <AddAnimalForm onAdd={handleAddAnimal} />}
+          ))}
+        </tbody> 
+              </table>
+     
+    </div> 
+    <button onClick={()=> setShowForm(prev=>!prev )} className="add-animal-btn"> 
+          {showForm ? 'Cancelar' : 'Adicionar Animal' }
+          </button>
+          
+         {showForm && <AddAnimalForm onAdd={handleAddAnimal} />}
     </>
   );
 };

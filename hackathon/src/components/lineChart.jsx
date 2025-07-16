@@ -64,45 +64,6 @@ export default function LineClick() {
         />
       </Box>
 
-      <Stack direction="column" sx={{ width: { xs: '100%', md: '40%' } }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Typography>Click on the chart</Typography>
-          <IconButton
-            aria-label="reset"
-            size="small"
-            onClick={() => {
-              setItemData(undefined);
-              setAxisData(null);
-            }}
-          >
-            <UndoOutlinedIcon fontSize="small" />
-          </IconButton>
-        </Box>
-
-        <Box
-          sx={{
-            bgcolor: '#f5f5f5',
-            p: 2,
-            borderRadius: 1,
-            fontFamily: 'monospace',
-            whiteSpace: 'pre-wrap',
-            overflow: 'auto',
-            mt: 1,
-          }}
-        >
-          <Typography variant="subtitle2" gutterBottom>Item Data:</Typography>
-          <pre>{itemData ? JSON.stringify(itemData, null, 2) : '// Clicked item data will appear here'}</pre>
-
-          <Typography variant="subtitle2" gutterBottom sx={{ mt: 2 }}>Axis Data:</Typography>
-          <pre>{axisData ? JSON.stringify(axisData, null, 2) : '// Clicked axis data will appear here'}</pre>
-        </Box>
-      </Stack>
     </Stack> 
   );
 }
