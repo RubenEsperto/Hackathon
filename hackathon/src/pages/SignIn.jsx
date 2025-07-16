@@ -2,14 +2,12 @@ import '../styles/signin.css'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const navigate = useNavigate();
-
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError('');
