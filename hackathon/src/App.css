@@ -14,6 +14,23 @@
     margin-left: 250px;
 }
 
+.pie-div {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 276px;
+  margin-left: 250px;
+  padding: 10px;
+  text-align: left;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.chart-wrap {
+  display:flex;
+
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -42,4 +59,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.chart-wrap {
+  display: flex;
+  gap: 2rem; /* optional spacing between charts */
+  align-items: flex-start;
+  flex-wrap: wrap; /* optional: allows wrapping on smaller screens */
+}
+
+.pie-div, .line-div {
+  flex: 1;
+  min-width: 300px; /* optional: control how small they can shrink */
 }

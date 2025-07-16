@@ -16,6 +16,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import SmallCard from './components/SmallCard.jsx';
 import FoodTable from './components/FeedTable.jsx';
+import BasicPie from './components/PieChart.jsx';
+import LineClick from './components/lineChart'
+
 
 const drawerWidth = 240;
 
@@ -35,6 +38,8 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
+
+      {/*SIDEBAR*/}
       <Drawer
         sx={{
           width: drawerWidth,
@@ -76,6 +81,17 @@ function App() {
           <SmallCard titulo="Próxima Encomenda"  valor="3 meses" quantia="(300ton/sardinhas)"/>
           <SmallCard titulo="Última Encomenda"  valor="2 semanas"  quantia="(200ton/crustaceos)"/>
         </div>
+
+  <div clasName="chart-wrap">
+    <div className="pie-div">
+      <BasicPie/>
+    </div>
+
+    <div className="line-div">
+      <LineClick/>
+  </div>
+
+  </div>
       </Box>
      <FoodTable/> 
      </div>
