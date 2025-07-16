@@ -1,20 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Table-Animals.css';
 
 const DataTable = () => {
-  const animals = [ 
-    
-    { id: 1, nome: 'Larry', espécie: 'Lontra', ração: 'Peixes e crustáceos ', quantity: '20 toneladas'},
-    { id: 2, nome: 'Dolly & Molly', espécie: 'Golfinho', ração: 'Sardinhas', quantity: '12 toneladas'}, 
-    { id: 3, nome: 'Nemo', espécie: 'Peixe-palhaço', ração: 'Comida de peixe normal ', quantity: '4 toneladas'},
-    { id: 4, nome: 'Kroak', espécie: 'Tubarão-Branco', ração: 'Atum e outros peixes ', quantity: '20 toneladas'}
-  ]; 
+  const [animals, setAnimals] = useState([]);
 
+  const fetchAnimals = async () => {
+    const res = await fetch('http://localhost:3034/animals');
+    const data = await res.json();
+    setAnimals(data);
+  };
 
-  const handleAddFood = (id) => {
+  useEffect(() => {
+    fetchAnimals();
+  }, []);
+
+  const handleAddFood = async (id) => {
     const amount = prompt('Definir quantidade de ração');
     const tons = parseFloat(amount)
-  }
+
+    if (isNaN(tons)) {
+      alert('Por favor, insira um número válido.');
+      return;
+    }
+    
+    try {
+      const res = await fetch(`http://localhost:3034/animals/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ ration: tons })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('Atualização feita com sucesso!');
+        fetchAnimals();
+      } else {
+        alert(`Erro: ${data.error || data.message}`);
+      }
+    } catch (err) {
+      console.error('Erro na atualização:', err);
+      alert('Erro ao tentar atualizar a ração.');
+    }
+  };
 
   return (
     <div className="table-container">
@@ -31,14 +61,14 @@ const DataTable = () => {
           </tr>
         </thead>
         <tbody>
-          {animals.map(animal => (
-            <tr key={animal.id}>
-              <td>{animal.id}</td>
-              <td>{animal.nome}</td>
-              <td>{animal.espécie}</td>
-              <td>{animal.ração}</td>
-              <td>{animal.quantity}</td>
-              <td> <button className='addFood' onClick={() => handleAddFood(animal.id)}> Editar</button></td>
+          {animals.map((animal, i) => (
+            <tr key={i}>
+              <td>{i}</td>
+              <td>{animal.name}</td>
+              <td>{animal.species}</td>
+              <td>{animal.ration.type}</td>
+              <td>{animal.ration.quantity}</td>
+              <td> <button className='addFood' onClick={() => handleAddFood(animal._id)}> Editar</button></td>
             </tr>
           ))}
         </tbody>
