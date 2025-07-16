@@ -6,7 +6,7 @@ dotenv.config();
 const url = new URL(process.env.MONGO_URL || "mongodb://localhost:27017");
 
 // Database Name
-const defaultDbName = "Hackathon";
+const defaultDbName = "oceania";
 
 let client = undefined
 
