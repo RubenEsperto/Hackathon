@@ -10,6 +10,20 @@ const FeedTable = () => {
     const data = await res.json();
     setRations(data);
   }
+  
+const handleEditQuantidade = (id) => {
+  const amount = prompt('Nova quantidade(toneladas):');
+  const tons = parseFloat(amount);
+  if(!isNaN(tons) && tons >= 1 && tons <= 100) { 
+    setFeedData(prev => 
+      prev.map(feed => 
+        feed.id === id ? {...feed, quantity: tons } : feed
+      )
+    );
+  }else{ 
+    alert ('Por favor, insira um valor entre 1 e 100 toneladas.')
+  }
+  };
 
   const fetchAnimals = async () => {
     const res = await fetch('http://localhost:3034/animals'); 
@@ -46,7 +60,7 @@ const FeedTable = () => {
 
   return (
     <div className="table-container">
-      <h1>Estoque de Ração</h1>
+    
       <table className="data-table">
         <thead>
           <tr>
@@ -67,7 +81,7 @@ const FeedTable = () => {
               <td>{feed.quantity}</td>
               <td>{getRemainingMonths(feed.name, feed.quantity)}</td>
               <td>
-                <button className='addFood'onClick={() => alert('Funcionalidade em desenvolvimento')}>
+                <button className='addFood'onClick={() => handleEditQuantidade(feed.id)}>
                   Editar
                 </button>
               </td>
