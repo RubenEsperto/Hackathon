@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Table-Animals'; // reutilizando estilos
 
 const FeedTable = () => {
@@ -76,10 +76,10 @@ const handleEditQuantidade = (id) => {
           {feedData.map((feed, i) => (
             <tr key={i}>
               <td>{i}</td>
-              <td>{feed.name}</td>
-              <td>{feed.animal}</td>
-              <td>{feed.quantity}</td>
-              <td>{getRemainingMonths(feed.name, feed.quantity)}</td>
+              <td>{rations.name}</td>
+              <td>{rations.animal}</td>
+              <td>{rations.quantity}</td>
+              <td>{getRemainingMonths(rations.name, rations.quantity)}</td>
               <td>
                 <button className='addFood'onClick={() => handleEditQuantidade(feed.id)}>
                   Editar
