@@ -15,7 +15,7 @@ const DataTable = () => {
 const [showForm, setShowForm ] = useState(false);
 
 
-  const handleAddFood = (id) => {
+  const handleAddFood = async (id) => {
     const amount = prompt('Definir quantidade de ração');
     const tons = parseFloat(amount)
   }

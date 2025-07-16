@@ -5,7 +5,10 @@ const { getUser } = require("./services/user");
 const { createToken, verifyToken, removeToken } = require("./services/token");
 const { createNewSpent, fetchSpent,} = require("./services/spent");
 const app = express();
+const cors = require('cors');
 const port = 3034;
+
+app.use(cors());
 app.use(express.json());
 
 app.post("/animals", async (req, res) => {
