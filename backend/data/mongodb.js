@@ -1,12 +1,10 @@
 const { MongoClient } = require("mongodb") ;
-const dotenv = require("dotenv");
-dotenv.config();
 
 // Connection URL
-const url = new URL(process.env.MONGO_URL || "mongodb://localhost:27017");
+const url = "mongodb://localhost:27017";
 
 // Database Name
-const defaultDbName = "oceania";
+const defaultDbName = "Hackaton";
 
 let client = undefined
 
