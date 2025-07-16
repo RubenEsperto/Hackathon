@@ -16,13 +16,13 @@ import MailIcon from '@mui/icons-material/Mail';
 import SmallCard from './components/SmallCard.jsx';
 import FoodTable from './components/FeedTable.jsx';
 import BasicPie from './components/PieChart.jsx';
-import LineClick from './components/lineChart'
+import LineClick from './components/lineChart.jsx'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import SidebarMenu from './components/SideBarMenu';
 import ListadeAnimais from './pages/StockAnimals';
 import FoodStock from './pages/StockFood';
+import SignIn from './pages/SignIn.jsx';
 
 const drawerWidth = 240;
 
@@ -71,6 +71,7 @@ function App() {
             <Route path="/stock/animais" element={<ListadeAnimais />} />
             <Route path="/stock/comida" element={<FoodStock />} />
             <Route path="/dashboard" element={<div>Dashboard</div>} />
+            <Route path="/signin" element={<SignIn/>} />
           </Routes>
         </Box>
       </Box>
