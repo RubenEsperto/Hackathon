@@ -1,5 +1,8 @@
 import '../styles/signin.css'
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const navigate = useNavigate();
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -13,11 +16,14 @@ const SignIn = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+    const response = await fetch('http://localhost:3034/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: email,
+        password,
+      }),
+    });
 
       const data = await response.json();
 
@@ -25,13 +31,13 @@ const SignIn = () => {
         throw new Error(data.message || 'Login failed');
       }
 
-      localStorage.setItem('jwt', data.token);
-      window.location.href = '/dashboard';
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+      localStorage.setItem('token', data.token);
+    navigate('/dashboard');
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
   };
 
   return (
@@ -40,7 +46,7 @@ const SignIn = () => {
       <form onSubmit={handleSignIn} className="signin-form">
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Name"
           value={email}
           required
           onChange={(e) => setEmail(e.target.value)}
