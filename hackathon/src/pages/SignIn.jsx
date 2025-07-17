@@ -43,7 +43,7 @@ const SignIn = () => {
       <h2>Sign In</h2>
       <form onSubmit={handleSignIn} className="signin-form">
         <input
-          type="email"
+          type="text"
           placeholder="Name"
           value={email}
           required
