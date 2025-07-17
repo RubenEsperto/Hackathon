@@ -2,6 +2,7 @@ import React from 'react';
 import DataTable from '../components/Table-Animals.jsx';
 import SmallCard from '../components/SmallCard.jsx';
 import SearchBar from '../components/SearchBar.jsx';
+import BasicTable from '../components/TableModern.jsx'
 
 const ListadeAnimais = (props) => {
 
@@ -23,7 +24,7 @@ const ListadeAnimais = (props) => {
       </div>
       <h1>Lista de Animais</h1>
       <SearchBar onSearch={handleSearch}/>
-      <DataTable/>
+      <BasicTable/>
     </div>
   );
 };
