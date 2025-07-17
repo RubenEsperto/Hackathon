@@ -8,7 +8,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-
+import './styles/StockAnimals.css'
 import SidebarMenu from './components/SideBarMenu';
 import ListadeAnimais from './pages/StockAnimals';
 import FoodStock from './pages/StockFood';
@@ -26,8 +26,8 @@ function Layout({ children }) {
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, background: '#2b7a78' }}
       >
         <Toolbar>
-          <Typography  variant="h4" noWrap component="div">
-            Olá, admin! Bem-vindo ao painel de controle.
+          <Typography variant="h4" noWrap component="div"   sx={{ fontFamily: 'Georgia, Times New Roman, serif' }} >
+            Olá, Administrador. Bem-vindo ao painel de controlo.
           </Typography>
         </Toolbar>
       </AppBar>
