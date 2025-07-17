@@ -14,6 +14,7 @@ function SidebarMenu() {
   const location = useLocation();
 
   return (
+    <>
     <List>
       {navItems.map((item, index) => (
         <ListItem key={item.text} disablePadding>
@@ -30,6 +31,7 @@ function SidebarMenu() {
         </ListItem>
       ))}
     </List>
+    </>
   );
 }
 

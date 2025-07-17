@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Table-Animals.css';
+import '../styles/AddAnimal.css'
 
 const AddAnimalForm = ({ onAdd }) => {
   const [formData, setFormData] = useState({
@@ -84,17 +84,20 @@ const AddAnimalForm = ({ onAdd }) => {
   };
 
   return (
+    <div className="form-flex">
     <form onSubmit={handleSubmit} className="add-animal-form">
       <input
         type="text"
         name="nome"
         placeholder="Nome"
+        className="input-row"
         value={formData.nome}
         onChange={handleChange}
       />
       <input
         type="text"
         name="espécie"
+        className="input-row"
         placeholder="Espécie"
         value={formData.espécie}
         onChange={handleChange}
@@ -103,6 +106,7 @@ const AddAnimalForm = ({ onAdd }) => {
         type="text"
         name="ração"
         placeholder="Tipo de ração (ex: Milho)"
+        className="input-row"
         value={formData.ração}
         onChange={handleChange}
       />
@@ -110,11 +114,14 @@ const AddAnimalForm = ({ onAdd }) => {
         type="text"
         name="quantidade"
         placeholder="Quantidade (ex: 10t)"
+        className="input-row"
         value={formData.quantidade}
         onChange={handleChange}
       />
       <button type="submit">Adicionar Animal</button>
     </form>
+    </div>
+
   );
 };
 
