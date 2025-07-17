@@ -1,0 +1,44 @@
+.input-row {
+  padding: 10px;
+  font-size: 28px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  margin: 10px;
+}
+
+.form-flex {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.add-animal-btn {
+  flex: 1 1 100%; 
+  padding: 10px;
+  font-size: 28px;
+  margin-left: 10px;
+  margin-top: 20px;
+  background-color: #2b7a78;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border: 1px solid #0e434d;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.add-animal-form button {
+  flex: 1 1 100%; /* Full width */
+  padding: 10px;
+  font-size: 28px;
+  background-color: #2b7a78;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border: 1px solid #0e434d;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  
+
+}

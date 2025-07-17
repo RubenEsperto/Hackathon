@@ -34,7 +34,7 @@ function Layout({ children }) {
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h4" noWrap component="div">
             Olá, admin! Bem-vindo ao painel de controle.
           </Typography>
         </Toolbar>
