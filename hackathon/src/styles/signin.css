@@ -2,9 +2,10 @@
 
 .signin-container {
   max-width: 400px;
+  height: 600px;
   margin: 100px auto;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #ffffff;
   border-radius: 8px;
   text-align: center;
   font-family: Arial, sans-serif;
@@ -12,39 +13,76 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #2b7a78;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logosignin{
+  width: 375px;
+  align-self: center;
+  margin-bottom: 0px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+ 
+
+.h2{
+  margin-top: 0px;
+}
+
 .signin-form {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-top: 20px;
+  align-items: center;
 }
 
 .signin-input {
+  display: flex;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #aaa;
   border-radius: 4px;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s; 
+  margin: 8px;
+  width: 305px; 
+  box-sizing: border-box;
+  
 }
 
 .signin-input:focus {
-  border-color: #1976d2;
+  border-color: #1f5756;
   outline: none;
 }
 
 .signin-button {
   padding: 10px;
   font-size: 16px;
-  background-color: #1976d2;
+  background-color: #2b7a78;
   color: white;
   border: none;
   border-radius: 4px;
+  width: 305px; 
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .signin-button:hover {
-  background-color: #155a9c;
+  background-color: #1f5756;
 }
 
 .signin-error {
