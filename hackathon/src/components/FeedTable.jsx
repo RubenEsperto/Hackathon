@@ -114,7 +114,7 @@ const handleEditQuantidade = (id) => {
               <td>{ration.quantity}</td>
               <td>{getRemainingMonths(ration, ration.quantity)}</td>
               <td>
-                <button className='addFood'onClick={() => handleEditQuantidade(ration.id)}>
+                <button className='action-button edit-button'onClick={() => handleEditQuantidade(ration.id)}>
                   Editar
                 </button>
               </td>

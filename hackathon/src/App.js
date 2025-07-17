@@ -12,20 +12,12 @@ import Divider from '@mui/material/Divider';
 import SidebarMenu from './components/SideBarMenu';
 import ListadeAnimais from './pages/StockAnimals';
 import FoodStock from './pages/StockFood';
-import SignIn from './pages/SignIn.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+import SignIn from './pages/SignIn';
+import Dashboard from './pages/Dashboard';
 
 const drawerWidth = 240;
 
 function Layout({ children }) {
-  const location = useLocation();
-  const isSignIn = location.pathname === '/signin';
-
-  // Don't show layout for sign-in
-  if (isSignIn) {
-    return <>{children}</>;
-  }
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -69,18 +61,25 @@ function Layout({ children }) {
   );
 }
 
+// Wrapper para aplicar layout apenas às rotas protegidas
+function ProtectedRoute({ element }) {
+  return <Layout>{element}</Layout>;
+}
+
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/stock/animais" element={<ListadeAnimais />} />
-          <Route path="/stock/comida" element={<FoodStock />} />
-          <Route path="/dashboard" element={<div>Dashboard</div>} />
-          <Route path="/" element={<SignIn />} /> {/* ✅ Default route */}
-        </Routes>
-      </Layout>
+      <Routes>
+        <Route path="/signin" element={<SignIn />} />
+
+        {/* Páginas com layout */}
+        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+        <Route path="/stock/animais" element={<ProtectedRoute element={<ListadeAnimais />} />} />
+        <Route path="/stock/comida" element={<ProtectedRoute element={<FoodStock />} />} />
+
+        {/* Redirecionamento padrão */}
+        <Route path="*" element={<SignIn />} />
+      </Routes>
     </Router>
   );
 }

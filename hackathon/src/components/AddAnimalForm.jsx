@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/AddAnimal.css'
+import '../styles/AddAnimal.css';
 
-const AddAnimalForm = ({ onAdd }) => {
+const AddAnimalForm = ({ onAdd, rations }) => {
   const [formData, setFormData] = useState({
     nome: '',
     espécie: '',
@@ -9,24 +9,11 @@ const AddAnimalForm = ({ onAdd }) => {
     quantidade: '',
   });
 
-  const [rations, setRations] = useState([]);
-
+  // If you still want to fetch rations here instead of parent, keep this.
+  // But since DataTable already has rations, you can remove the fetch here
+  // and just use the prop.
   useEffect(() => {
-    const fetchRations = async () => {
-      try {
-        const res = await fetch('http://localhost:3034/rations', {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          }
-        });
-        const data = await res.json();
-        setRations(data);
-      } catch (err) {
-        console.error('Erro ao buscar rações:', err);
-      }
-    };
-
-    fetchRations();
+    // … opcional: remover se parent já faz fetch …
   }, []);
 
   const handleChange = (e) => {
@@ -36,28 +23,40 @@ const AddAnimalForm = ({ onAdd }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { nome, espécie, ração, quantidade } = formData;
 
+    const unitRegex = /^\d*\.?\d+\s?(g|kg|t)$/;
+
+    if (!unitRegex.test(formData.quantidade)) {
+        alert('Por favor insira a quantidade no formato correto (ex: 10g, 2.5kg, 0.01t)');
+        return;
+    }
+
     if (!nome || !espécie || !ração || !quantidade) {
-      alert("Preencha todos os campos!");
+      alert('Preencha todos os campos!');
       return;
     }
 
-    const selectedRation = rations.find(r => r.name.toLowerCase() === ração.toLowerCase());
-
-    if (!selectedRation) {
-      alert("Tipo de ração não encontrado.");
+    // Encontra a ração pelo ID (vindo do <select> do pai)
+    const selected = rations.find(r => r._id === ração);
+    if (!selected) {
+      alert('Tipo de ração não encontrado.');
       return;
     }
 
-    const animal = {
+    // Garante que quantity é string não-vazia antes de concatenar
+    const qtyTrimmed = quantidade.trim();
+    const finalQty = qtyTrimmed.endsWith('t')
+      ? qtyTrimmed
+      : `${qtyTrimmed}`;
+
+    const payload = {
       name: nome,
       species: espécie,
       ration: {
-        rationid: selectedRation._id,
-        quantity: quantidade.endsWith('t') ? quantidade : `${quantidade}t`,
-      }
+        type: selected._id,
+        quantity: finalQty,
+      },
     };
 
     try {
@@ -65,63 +64,74 @@ const AddAnimalForm = ({ onAdd }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: localStorage.getItem("token"),
+          Authorization: localStorage.getItem('token'),
         },
-        body: JSON.stringify(animal)
+        body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
       if (res.ok) {
-        onAdd({ ...animal, _id: data.id });
+        alert('Animal adicionado com sucesso!');
+        // limpa o form
         setFormData({ nome: '', espécie: '', ração: '', quantidade: '' });
+        // aciona o callback do pai (fecha + recarrega lista)
+        onAdd();
       } else {
-        alert(`Erro: ${data.error || data.message}`);
+        const err = await res.json();
+        alert(`Erro: ${err.error || err.message}`);
       }
     } catch (err) {
-      console.error('Erro ao adicionar animal:', err);
+      console.error(err);
       alert('Erro ao enviar dados do animal.');
     }
   };
 
   return (
     <div className="form-flex">
-    <form onSubmit={handleSubmit} className="add-animal-form">
-      <input
-        type="text"
-        name="nome"
-        placeholder="Nome"
-        className="input-row"
-        value={formData.nome}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="espécie"
-        className="input-row"
-        placeholder="Espécie"
-        value={formData.espécie}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="ração"
-        placeholder="Tipo de ração (ex: Milho)"
-        className="input-row"
-        value={formData.ração}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="quantidade"
-        placeholder="Quantidade (ex: 10t)"
-        className="input-row"
-        value={formData.quantidade}
-        onChange={handleChange}
-      />
-      <button type="submit">Adicionar Animal</button>
-    </form>
-    </div>
+      <form onSubmit={handleSubmit} className="add-animal-form">
+        <input
+          type="text"
+          name="nome"
+          placeholder="Nome"
+          className="input-row"
+          value={formData.nome}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="espécie"
+          placeholder="Espécie"
+          className="input-row"
+          value={formData.espécie}
+          onChange={handleChange}
+        />
 
+        {/* aqui trocamos apenas o input de texto por um select */}
+        <select
+          name="ração"
+          className="input-row"
+          value={formData.ração}
+          onChange={handleChange}
+        >
+          <option value="">Tipo de ração (selecione)</option>
+          {rations.map(r => (
+            <option key={r._id} value={r._id}>
+              {r.name}
+            </option>
+          ))}
+        </select>
+
+        <input
+          type="text"
+          name="quantidade"
+          placeholder="Quantidade (g/kg/t)"
+          className="input-row"
+          value={formData.quantidade}
+          onChange={handleChange}
+        />
+
+        <button type="submit">Adicionar Animal</button>
+      </form>
+    </div>
   );
 };
 

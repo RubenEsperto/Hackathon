@@ -3,7 +3,7 @@ const { ObjectId } = require("mongodb");
 
 async function createAnimal(animal) {
     animal.ration.id = new ObjectId(animal.ration.id);
-    animal.ration.quantity = animal.ration.quantity + "t";
+    animal.ration.quantity = animal.ration.quantity;
     return await AddAnimal(animal);
 }
 

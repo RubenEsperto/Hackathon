@@ -7,7 +7,6 @@ const DataTable = () => {
   const [rations, setRations] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  // Busca todos os animais
   const fetchAnimals = async () => {
     try {
       const res = await fetch('http://localhost:3034/animals', {
@@ -20,7 +19,6 @@ const DataTable = () => {
     }
   };
 
-  // Busca todas as rações
   const fetchRations = async () => {
     try {
       const res = await fetch('http://localhost:3034/rations', {
@@ -38,121 +36,114 @@ const DataTable = () => {
     fetchRations();
   }, []);
 
-  // Retorna o nome da ração dado o rationid
-  const getRationName = (rationTypeId) => {
-    if (!rationTypeId) return '-';
-    const r = rations.find(r => r._id === rationTypeId);
-    return r ? r.name : '-';
-  };
-
   const handleAddFood = async (id) => {
-    const amount = prompt('Definir quantidade de ração (apenas número):');
-    const unit = prompt('Definir unidade de peso (g, kg ou t):').toLowerCase();
+  const amount = prompt('Nova quantidade (ex: 500g, 2kg, 3.5t):');
 
-    const quantity = parseFloat(amount);
-    if (isNaN(quantity)) {
-      alert('Por favor, insira um número válido para a quantidade.');
-      return;
-    }
+  const unitRegex = /^\d*\.?\d+\s*(g|kg|t)$/i;
 
-    if (!['g', 'kg', 't'].includes(unit)) {
-      alert('Unidade inválida. Use g, kg ou t.');
-      return;
-    }
-
-    if (quantity <= 0) {
-      alert('Quantidade deve ser maior que zero.');
-      return;
-    }
-
-    const quantityString = `${quantity}${unit}`;
+  if (amount && unitRegex.test(amount.trim())) {
+    const cleanedAmount = amount.trim().toLowerCase();
 
     try {
-      const res = await fetch(`http://localhost:3034/animals/${id}`, {
+      const token = localStorage.getItem('token'); // adjust this if you store token differently
+
+      const response = await fetch(`http://localhost:3034/animals/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: localStorage.getItem('token'),
+          'Authorization': token
         },
-        body: JSON.stringify({ ration: quantityString }),
+        body: JSON.stringify({ ration: cleanedAmount })
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        alert('Atualização feita com sucesso!');
-        fetchAnimals();
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message || 'Animal atualizado com sucesso!');
+        setRations(prev =>
+          prev.map(ration =>
+            ration._id === id ? { ...ration, quantity: cleanedAmount } : ration
+          )
+        );
       } else {
-        alert(`Erro: ${data.error || data.message}`);
+        alert(data.error || data.message || 'Erro ao atualizar o animal.');
       }
     } catch (err) {
-      console.error('Erro na atualização:', err);
-      alert('Erro ao tentar atualizar a ração.');
-    }
-  };
-
-  const handleAddAnimal = async (newAnimal) => {
-    try {
-      const payload = {
-        name: newAnimal.name,
-        species: newAnimal.species,
-        ration: {
-          rationid: newAnimal.rationid,
-          quantity: newAnimal.quantity,
-        }
-      };
-
-      const res = await fetch('http://localhost:3034/animals', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: localStorage.getItem('token'),
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (res.ok) {
-        alert("Animal adicionado com sucesso!");
-        fetchAnimals();
-        setShowForm(false);
-      } else {
-        const data = await res.json();
-        alert(`Erro: ${data.message || 'Não foi possível adicionar o animal'}`);
-      }
-    } catch (err) {
+      alert('Erro de rede ou do servidor.');
       console.error(err);
-      alert("Erro ao adicionar animal.");
     }
+
+  } else {
+    alert('Por favor, insira uma quantidade válida (ex: 500g, 2kg, 3.5t).');
+  }
+};
+
+  // **Novo**: só fecha o form e recarrega a lista
+  const handleAddAnimal = () => {
+    setShowForm(false);
+    fetchAnimals();
   };
+
+  const handleDeleteAnimal = async (id) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Você precisa estar logado para deletar um animal.');
+      return;
+    }
+    try {
+      const res = await fetch(`http://localhost:3034/animals/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: token },
+      });
+
+      if (res.ok) {
+        alert('Animal deletado com sucesso!');
+        fetchAnimals(); // Recarrega a lista de animais
+      } else {
+        const err = await res.json();
+        alert(`Erro ao deletar animal: ${err.error || err.message}`);
+      }
+    } catch (err) {
+      console.error('Erro ao deletar animal:', err);
+      alert('Erro ao deletar animal.');
+    } finally {
+      setShowForm(false); // Fecha o formulário se estiver aberto
+    }
+  }
 
   return (
     <>
       <div className="table-container">
         <table className="data-table">
           <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Espécie</th>
-              <th>Tipo de Ração</th>
-              <th>Quantidade</th>
-              <th>Adicionar Comida</th>
-            </tr>
-          </thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Espécie</th>
+            <th>Tipo de Ração</th>
+            <th>Quantidade</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
           <tbody>
             {animals.map((animal, i) => (
               <tr key={animal._id}>
                 <td>{i + 1}</td>
                 <td>{animal.name}</td>
                 <td>{animal.species}</td>
-                <td>{getRationName(animal.ration?.type)}</td>
+                <td>{rations.find(r => r._id === animal.ration?.type)?.name || '-'}</td>
                 <td>{animal.ration?.quantity || '-'}</td>
                 <td>
                   <button
-                    className='addFood'
+                    className="action-button edit-button"
                     onClick={() => handleAddFood(animal._id)}
                   >
                     Editar
                   </button>
+                  <button
+                      className='action-button delete-button'
+                      onClick={() => handleDeleteAnimal(animal._id)}
+                      >Apagar</button>
                 </td>
               </tr>
             ))}
@@ -167,7 +158,12 @@ const DataTable = () => {
         {showForm ? 'Cancelar' : 'Adicionar Animal'}
       </button>
 
-      {showForm && <AddAnimalForm onAdd={handleAddAnimal} />}
+      {showForm && (
+        <AddAnimalForm
+          onAdd={handleAddAnimal}
+          rations={rations}
+        />
+      )}
     </>
   );
 };
