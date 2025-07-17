@@ -17,10 +17,13 @@ async function fetchAnimalById(id) {
 } 
 
 async function modifyAnimal(id, update) {
-    const newId = new ObjectId(id);
-    const animal = await GetAnimalById(newId);
-    const newUpdate = { ...animal.ration, quantity: update + "t"}
-    return await UpdateAnimal(newId, newUpdate);
+  const newId = new ObjectId(id);
+  const animal = await GetAnimalById(newId);
+
+  // update já é string tipo "500g" ou "10t"
+  const newUpdate = { ...animal.ration, quantity: update };
+
+  return await UpdateAnimal(newId, newUpdate);
 }
 
 async function deleteAnimal(id) {

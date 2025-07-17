@@ -2,6 +2,11 @@ const { ObjectId } = require("mongodb")
 const { GetCollection } = require("./mongodb")
 
 
+function isValidObjectId(id) {
+  return typeof id === 'string' && /^[a-fA-F0-9]{24}$/.test(id);
+}
+
+
 const COLLECTION = "tokens"
 
 async function insertToken(userId) {
@@ -14,13 +19,18 @@ async function insertToken(userId) {
 
 
 async function findToken(token) {
-    const new_token = new ObjectId(String(token))
-    
-    const col = await GetCollection(COLLECTION)
+  console.log("Token recebido:", token);
 
-    const res = await col.findOne({_id: new_token})
+  if (!isValidObjectId(token)) {
+    console.warn("Token inválido, ignorando.");
+    return null;
+  }
 
-    return res
+  const new_token = new ObjectId(token);
+  const col = await GetCollection(COLLECTION);
+  const res = await col.findOne({ _id: new_token });
+
+  return res;
 }
 
 async function deleteToken(token) {
