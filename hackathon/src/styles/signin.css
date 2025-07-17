@@ -39,8 +39,10 @@ html, body {
 }
  
 
-.h2{
+h2{
   margin-top: 0px;
+  font-family: 'Georgia, Times New Roman, serif';
+  scale: 200%;
 }
 
 .signin-form {
