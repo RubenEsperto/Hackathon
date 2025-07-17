@@ -15,22 +15,22 @@ h1{
 }
 
 .edit-button {
-  background-color: #4caf50;
+  background-color: #3ba5a4;
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #45a049;
+  background-color: #2b7a79;
   transform: scale(1.05);
 }
 
 .delete-button {
-  background-color: #f44336;
+  background-color: #e2504c;
   color: white;
 }
 
 .delete-button:hover {
-  background-color: #d32f2f;
+  background-color: #993935;
   transform: scale(1.05);
 }
 

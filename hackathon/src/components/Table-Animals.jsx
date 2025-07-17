@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Table-Animals.css';
 import AddAnimalForm from './AddAnimalForm';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 const DataTable = () => {
   const [animals, setAnimals] = useState([]);
@@ -110,47 +117,54 @@ const DataTable = () => {
       setShowForm(false); // Fecha o formulário se estiver aberto
     }
   }
-
+  
   return (
-    <>
-      <div className="table-container">
-        <table className="data-table">
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Espécie</th>
-            <th>Tipo de Ração</th>
-            <th>Quantidade</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-          <tbody>
-            {animals.map((animal, i) => (
-              <tr key={animal._id}>
-                <td>{i + 1}</td>
-                <td>{animal.name}</td>
-                <td>{animal.species}</td>
-                <td>{rations.find(r => r._id === animal.ration?.type)?.name || '-'}</td>
-                <td>{animal.ration?.quantity || '-'}</td>
-                <td>
-                  <button
-                    className="action-button edit-button"
-                    onClick={() => handleAddFood(animal._id)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                      className='action-button delete-button'
-                      onClick={() => handleDeleteAnimal(animal._id)}
-                      >Apagar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
+    <div>
+    <TableContainer component={Paper} sx={{ backgroundColor: '#f5f5f5' }}>
+  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableHead>
+      <TableRow sx={{ backgroundColor: '#2b7a78' }}>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}}>ID </TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Nome</TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Espécie</TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Tipo de Ração</TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Quantidade</TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Ações</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {animals.map((animal, i) => (
+        <TableRow
+          key={animal.name}
+          sx={{
+            '&:last-child td, &:last-child th': { border: 0 },
+            '&:hover': { backgroundColor: '#e3f2fd' },
+          }}
+        >
+          <TableCell component="th" scope="row" sx={{fontSize: '20px'}}>{i}</TableCell>
+          <TableCell align="right" sx={{fontSize: '20px'}}>{animal.name}</TableCell>
+          <TableCell align="right" sx={{fontSize: '20px'}}>{animal.species}</TableCell>
+          <TableCell align="right" sx={{fontSize: '20px'}}>{rations.find(r => r._id === animal.ration?.type)?.name || '-'}</TableCell>
+          <TableCell align="right" sx={{fontSize: '20px'}}>{animal.ration?.quantity || '-'}</TableCell>
+          <TableCell align="right">
+            <button
+              className="action-button edit-button"
+              onClick={() => handleAddFood(animal._id)}
+            >
+              Editar
+            </button>
+            <button
+              className="action-button delete-button"
+              onClick={() => handleDeleteAnimal(animal._id)}
+            >
+              Apagar
+            </button>
+          </TableCell>
+        </TableRow> 
+))}
+    </TableBody>
+  </Table>
+</TableContainer>
       <button
         onClick={() => setShowForm(prev => !prev)}
         className="add-animal-btn"
@@ -163,9 +177,9 @@ const DataTable = () => {
           onAdd={handleAddAnimal}
           rations={rations}
         />
-      )}
-    </>
-  );
-};
+      )}  
+</div>
+  )
+}
 
 export default DataTable;

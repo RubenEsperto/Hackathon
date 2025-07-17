@@ -23,10 +23,10 @@ function Layout({ children }) {
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, background: '#2b7a78' }}
       >
         <Toolbar>
-          <Typography variant="h4" noWrap component="div">
+          <Typography  variant="h4" noWrap component="div">
             Olá, admin! Bem-vindo ao painel de controle.
           </Typography>
         </Toolbar>
