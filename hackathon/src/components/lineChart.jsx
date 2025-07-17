@@ -1,69 +1,108 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import UndoOutlinedIcon from '@mui/icons-material/UndoOutlined';
-
 import { LineChart } from '@mui/x-charts/LineChart';
 
-const lineChartsParams = {
-  series: [
-    {
-      id: 'series-1',
-      data: [3, 4, 1, 6, 5],
-      label: 'A',
-      area: true,
-      stack: 'total',
-      highlightScope: {
-        highlight: 'item',
-      },
-    },
-    {
-      id: 'series-2',
-      data: [4, 3, 1, 5, 8],
-      label: 'B',
-      area: true,
-      stack: 'total',
-      highlightScope: {
-        highlight: 'item',
-      },
-    },
-    {
-      id: 'series-3',
-      data: [4, 2, 5, 4, 1],
-      label: 'C',
-      area: true,
-      stack: 'total',
-      highlightScope: {
-        highlight: 'item',
-      },
-    },
-  ],
-  xAxis: [{ data: [0, 3, 6, 9, 12], scaleType: 'linear', id: 'axis1' }],
-  height: 400,
-};
+export default function RationStockLineChart() {
+  const [chartData, setChartData] = React.useState(null);
 
-export default function LineClick() {
-  const [itemData, setItemData] = React.useState();
-  const [axisData, setAxisData] = React.useState();
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [spentRes, rationsRes] = await Promise.all([
+          fetch('http://localhost:3034/spent', {
+            headers: { Authorization: localStorage.getItem('token') },
+          }),
+          fetch('http://localhost:3034/rations', {
+            headers: { Authorization: localStorage.getItem('token') },
+          }),
+        ]);
+
+        const spent = await spentRes.json();
+        const rations = await rationsRes.json();
+
+        const rationMap = {};
+        rations.forEach((r) => {
+          rationMap[r._id] = r.name;
+        });
+
+        const initialStocks = {
+          'Peixe Congelado': 15,
+          'Camarão Fresco': 8,
+          'Moluscos Variados': 10,
+          'Plâncton Seco': 9,
+          'Ração para Tartarugas': 11,
+          'Krill Congelado': 7,
+        };
+
+        const rationMonthly = {};
+        const months = [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+        ];
+
+        // Inicializa cada ração com o estoque fixo no primeiro mês e 0 nos demais
+        Object.values(rationMap).forEach((name) => {
+          const initialStock = initialStocks[name] || 50; // padrão 50 se não achar
+          rationMonthly[name] = [initialStock, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        });
+
+        // Adiciona/subtrai as quantidades gastas no mês correspondente
+        spent.forEach((entry) => {
+          const date = new Date(entry.date);
+          const monthIndex = date.getMonth();
+          const rationName = rationMap[entry.rationId];
+          if (!rationName) return;
+
+          const rawQty = entry.quantity.replace('kg', '').replace('t', '000');
+          const quantity = parseFloat(rawQty);
+
+          rationMonthly[rationName][monthIndex] += quantity;
+        });
+
+        // Calcula o acumulado mês a mês
+        Object.keys(rationMonthly).forEach((name) => {
+          const values = rationMonthly[name];
+          for (let i = 1; i < values.length; i++) {
+            values[i] += values[i - 1];
+          }
+        });
+
+        const series = Object.keys(rationMonthly).map((name, i) => ({
+          id: `series-${i}`,
+          label: name,
+          data: rationMonthly[name],
+          area: true,
+          stack: 'total',
+          highlightScope: { highlight: 'item' },
+        }));
+
+        const xAxis = [
+          {
+            id: 'months',
+            scaleType: 'point',
+            data: months,
+          },
+        ];
+
+        setChartData({ series, xAxis, height: 400 });
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <Stack
-      direction={{ xs: 'column', md: 'row' }}
-      spacing={{ xs: 0, md: 4 }}
-      sx={{ width: '100%' }}
-    >
+    <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
       <Box sx={{ flexGrow: 1 }}>
-        <LineChart
-          {...lineChartsParams}
-          onAreaClick={(event, d) => setItemData(d)}
-          onMarkClick={(event, d) => setItemData(d)}
-          onLineClick={(event, d) => setItemData(d)}
-          onAxisClick={(event, d) => setAxisData(d)}
-        />
+        {chartData ? (
+          <LineChart {...chartData} />
+        ) : (
+          <p>Carregando gráfico...</p>
+        )}
       </Box>
-
-    </Stack> 
+    </Stack>
   );
 }

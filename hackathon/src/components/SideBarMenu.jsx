@@ -15,18 +15,20 @@ function SidebarMenu() {
 
   return (
     <>
-    <List>
+    <List >
       {navItems.map((item, index) => (
-        <ListItem key={item.text} disablePadding>
-          <ListItemButton
+        <ListItem  key={item.text}  disablePadding>
+          <ListItemButton 
             component={Link}
             to={item.path}
             selected={location.pathname === item.path}
+            
           >
-            <ListItemIcon>
+            <ListItemIcon
+            >
               {index % 2 === 0 ? <SetMealIcon /> : <WavesIcon />}
             </ListItemIcon>
-            <ListItemText primary={item.text} />
+            <ListItemText primary={item.text} sx={{ '& .MuiTypography-root': { fontSize: '25px' } }} />
           </ListItemButton>
         </ListItem>
       ))}
@@ -36,3 +38,4 @@ function SidebarMenu() {
 }
 
 export default SidebarMenu;
+

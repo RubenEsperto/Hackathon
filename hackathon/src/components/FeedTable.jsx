@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './Table-Animals'; // reutilizando estilos
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
 
 const FeedTable = () => {
   const [rations, setRations] = useState([]);
@@ -93,37 +101,41 @@ const handleEditQuantidade = (id) => {
     fetchAnimals();
   }, []);
 
-  return (
-    <div className="table-container">
-    
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tipo de Ração</th>
-            <th>Quantidade</th>
-            <th>Duração Estimada</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rations.map((ration, i) => (
-            <tr key={i}>
-              <td>{i}</td>
-              <td>{ration.name}</td>
-              <td>{ration.quantity}</td>
-              <td>{getRemainingMonths(ration, ration.quantity)}</td>
-              <td>
-                <button className='action-button edit-button'onClick={() => handleEditQuantidade(ration.id)}>
-                  Editar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+return (
+    <TableContainer component={Paper} sx={{ backgroundColor: '#f5f5f5' }}>
+  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableHead>
+      <TableRow sx={{ backgroundColor: '#2b7a78' }}>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}}>ID </TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Tipo de Ração</TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Quantidade</TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Dueação Estimada</TableCell>
+        <TableCell sx={{ color: 'white' , fontSize: '25px'}} align="right">Ações</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {rations.map((ration, i) => (
+        <TableRow
+          key={i}
+          sx={{
+            '&:last-child td, &:last-child th': { border: 0 },
+            '&:hover': { backgroundColor: '#e3f2fd' },
+          }}
+        >
+          <TableCell component="th" scope="row" >{i}</TableCell>
+          <TableCell align="right" sx={{fontSize: '20px'}}>{ration.name}</TableCell>
+          <TableCell align="right" sx={{fontSize: '20px'}}>{ration.quantity}</TableCell>
+          <TableCell align="right" sx={{fontSize: '20px'}}>{getRemainingMonths(ration, ration.quantity)}</TableCell>
+          <TableCell align="right" sx={{fontSize: '20px'}}> <button className='action-button edit-button'onClick={() => handleEditQuantidade(ration.id)}>
+                   Editar
+                 </button></TableCell>
+        </TableRow>
+))}
+    </TableBody>
+  </Table>
+</TableContainer>
+  )
+}
+
 
 export default FeedTable;
