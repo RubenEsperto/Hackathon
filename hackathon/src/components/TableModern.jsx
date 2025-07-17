@@ -26,11 +26,11 @@ export default function BasicTable() {
   <Table sx={{ minWidth: 650 }} aria-label="simple table">
     <TableHead>
       <TableRow sx={{ backgroundColor: '#1976d2' }}>
-        <TableCell sx={{ color: 'white', fontSize: '25px' }}>ID </TableCell>
-        <TableCell sx={{ color: 'white', fontSize: '25px' }} align="right">Nome</TableCell>
-        <TableCell sx={{ color: 'white', fontSize: '25px' }} align="right">Espécie</TableCell>
-        <TableCell sx={{ color: 'white', fontSize: '25px' }} align="right">Carbs</TableCell>
-        <TableCell sx={{ color: 'white', fontSize: '25px' }} align="right">Protein&nbsp;(g)</TableCell>
+        <TableCell sx={{ color: 'white', fontSize: '25px', fontFamily: 'Georgia, Times New Roman, serif' }}>ID </TableCell>
+        <TableCell sx={{ color: 'white', fontSize: '25px', fontFamily: 'Georgia, Times New Roman, serif' }} align="right">Nome</TableCell>
+        <TableCell sx={{ color: 'white', fontSize: '25px', fontFamily: 'Georgia, Times New Roman, serif' }} align="right">Espécie</TableCell>
+        <TableCell sx={{ color: 'white', fontSize: '25px', fontFamily: 'Georgia, Times New Roman, serif' }} align="right">Carbs</TableCell>
+        <TableCell sx={{ color: 'white', fontSize: '25px', fontFamily: 'Georgia, Times New Roman, serif' }} align="right">Protein&nbsp;(g)</TableCell>
       </TableRow>
     </TableHead>
     <TableBody>

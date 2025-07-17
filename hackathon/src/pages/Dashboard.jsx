@@ -24,9 +24,6 @@ export default function Dashboard(){
             <h2>Estoque dividido por tipo</h2>
                 <LineChart/>
     </div>
-    
-    <div class="div7">
-    Table?</div>
 </>
     )
 }
